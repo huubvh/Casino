@@ -9,23 +9,15 @@ namespace PlayChannelCLI
        
         public static void Main(string[] args)
         {
-            GameManager.GamesCatalog availableGames = new GameManager.GamesCatalog();
-            availableGames.AllGames = new List<GameManager.PublishedGame>();
-        //initialize data because we do not have a database implemented yet
-            GameManager.PublishedGame newGame = new GameManager.PublishedGame();
-            newGame.GameName = "DiceGame";
-            newGame.GameType = "Dice";
-            newGame.GameOdds = 0.93;
-            availableGames.AllGames.Add(newGame);
-
-            GameManager.PublishedGame newGame2 = new GameManager.PublishedGame();
-            newGame2.GameName = "CardGame";
-            newGame2.GameType = "Cards";
-            newGame2.GameOdds = 0.95;
-            availableGames.AllGames.Add(newGame2);
-
+            //get list of available games
+           
+            GameManager.GamesCatalog catalog = new GameManager.GamesCatalog();
+            
+            //post welcome message
             Welcome();
-            SelectGame(availableGames);
+
+            //start 
+            SelectGame(catalog);
         }
 
         public static void Welcome()
@@ -36,26 +28,20 @@ namespace PlayChannelCLI
 
         }
 
-        public static void SelectGame(GameManager.GamesCatalog availableGames) {
-            //get list of games
-            int key = 1;
-            var gamesCatalog = new Dictionary<int, string>();
-                         
-            foreach (var item in availableGames.AllGames)
-            {
-                gamesCatalog.Add(key,item.GameName);
-                key++;
-            }
+        public static void SelectGame(GameManager.GamesCatalog catalog) {
+                       
 
-            
             // foreach game in the gamelist print message
-            foreach (var item in gamesCatalog)
+            foreach (var item in catalog.AllGames)
             {
                 Console.WriteLine("For " + item.Value + " press " + item.Key);
                 ;
             }
-        
+
+            // let the player choose which game to play        
             string input = Console.ReadLine();
+
+                //validate input
             int inputInt = 0;
             try
             {
@@ -66,9 +52,7 @@ namespace PlayChannelCLI
             {
                 Console.WriteLine($"Unable to parse '{input}'");
             }
-
-            // todo: add validation to input
-            foreach (var item in gamesCatalog)
+            foreach (var item in catalog.AllGames)
             {
                 if (inputInt == item.Key)
                 {
@@ -76,22 +60,27 @@ namespace PlayChannelCLI
                 }
             }
 
+            //start game
             if (input == "1")
             {
-                //play dicegame
-                Environment.Exit(1);
+                DiceGame.DiceGame result = new DiceGame.DiceGame();
+                Console.WriteLine(result.GameResult);
+         
+                
             }
-            if (input == "2")
+            else if (input == "2")
             {
                 Console.WriteLine("This still needs to be implemented");
-                SelectGame(availableGames);
+                SelectGame(catalog);
             }
             else
             {
                 Console.WriteLine("This is not a valid input");
-                SelectGame(availableGames);
+                SelectGame(catalog);
             }
 
+
         }
+
     }
 }

@@ -10,8 +10,6 @@ namespace GameManager
         public string GameType { get; set; }
         public double GameOdds { get; set; }
 
-       
-
         
     }
 }

@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Casino\TheHouse.csproj" />
+    <ProjectReference Include="..\DiceGame\DiceGame.csproj" />
     <ProjectReference Include="..\GameManager\GameManager.csproj" />
   </ItemGroup>
 
