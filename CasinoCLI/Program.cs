@@ -9,7 +9,7 @@ namespace PlayChannelCLI
 
         static void Main(string[] args)
         {
-            //initialize data because we do not have a database implemented
+            //initialize data because we do not have a database implemented yet
             GameManager.PublishedGame newGame = new GameManager.PublishedGame();
             newGame.GameName = "DiceGame";
             newGame.GameType = "Dice";
