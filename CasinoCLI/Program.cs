@@ -9,15 +9,13 @@ namespace PlayChannelCLI
        
         public static void Main(string[] args)
         {
-            //get list of available games
-           
-            GameManager.GamesCatalog catalog = new GameManager.GamesCatalog();
-            
+
             //post welcome message
             Welcome();
-
+            TheHouse.Player player = new TheHouse.Player();
+            player.Credits = 100;
             //start 
-            SelectGame(catalog);
+            SelectGame(player);
         }
 
         public static void Welcome()
@@ -28,8 +26,11 @@ namespace PlayChannelCLI
 
         }
 
-        public static void SelectGame(GameManager.GamesCatalog catalog) {
-                       
+        public static void SelectGame(TheHouse.Player player) {
+            //get list of available games
+
+            GameManager.GamesCatalog catalog = new GameManager.GamesCatalog();
+
 
             // foreach game in the gamelist print message
             foreach (var item in catalog.AllGames)
@@ -63,20 +64,22 @@ namespace PlayChannelCLI
             //start game
             if (input == "1")
             {
-                DiceGame.DiceGame result = new DiceGame.DiceGame();
-                Console.WriteLine(result.GameResult);
+                DiceGame.DiceGame currentGame = new DiceGame.DiceGame();
+                currentGame.Game(player,3,6);
+
+                Console.WriteLine(currentGame.result);
          
                 
             }
             else if (input == "2")
             {
                 Console.WriteLine("This still needs to be implemented");
-                SelectGame(catalog);
+                SelectGame(player);
             }
             else
             {
                 Console.WriteLine("This is not a valid input");
-                SelectGame(catalog);
+                SelectGame(player);
             }
 
 
