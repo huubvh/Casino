@@ -27,7 +27,7 @@ namespace DiceGame
             currentGame.playerTurn.PlayerDice = new List<int>();
             currentGame.diceAmount = diceAmount;
             currentGame.diceType = diceType;
-            currentGame.bet = enterBet(player);
+            currentGame.bet = EnterBet(player);
 
             //start
             currentGame.pushDie = Dice.DiceRoll(currentGame.diceType);
@@ -140,7 +140,7 @@ namespace DiceGame
             return shove.result;
         }
 
-        public static int enterBet(TheHouse.Player player)
+        public static int EnterBet(TheHouse.Player player)
         {
             int betAmount = 0;
             Console.WriteLine("Your current balance = " + player.Credits);
@@ -154,7 +154,7 @@ namespace DiceGame
             catch (FormatException)
             {
                 Console.WriteLine($"you have not entered a valid amount");
-                enterBet(player);
+                EnterBet(player);
             }
 
             return (betAmount);

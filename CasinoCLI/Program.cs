@@ -44,15 +44,13 @@ namespace PlayChannelCLI
 
                 //validate input
             int inputInt = 0;
-            try
-            {
-                inputInt = Int16.Parse(input);
 
-            }
-            catch (FormatException)
+            if(!int.TryParse(input, out inputInt))
             {
-                Console.WriteLine($"Unable to parse '{input}'");
+                Console.WriteLine($"'{input}' is not a valid input");
+                SelectGame(player);
             }
+           
             foreach (var item in catalog.AllGames)
             {
                 if (inputInt == item.Key)
@@ -62,23 +60,22 @@ namespace PlayChannelCLI
             }
 
             //start game
-            if (input == "1")
+            if (inputInt == 1)
             {
                 DiceGame.DiceGame currentGame = new DiceGame.DiceGame();
                 currentGame.Game(player,3,6);
 
                 Console.WriteLine(currentGame.result);
-         
-                
+    
             }
-            else if (input == "2")
+            else if (inputInt == 2)
             {
                 Console.WriteLine("This still needs to be implemented");
                 SelectGame(player);
             }
             else
             {
-                Console.WriteLine("This is not a valid input");
+                Console.WriteLine($"{inputInt} is not a valid input");
                 SelectGame(player);
             }
 
