@@ -1,18 +1,18 @@
 ﻿using System;
-using TheHouse;
-using GameManager;
+using static DiceGame.InterfaceManager;
 
 namespace PlayChannelCLI
 {
     class PlayseatCLI
     {
 
-       
+
         public static void Main(string[] args)
         {
 
             //post welcome message
             Welcome();
+
             TheHouse.Player player = new TheHouse.Player();
             player.Credits = 100;
             //start 
@@ -36,6 +36,7 @@ namespace PlayChannelCLI
             // foreach game in the gamelist print message
             foreach (var item in catalog.AllGames)
             {
+
                 Console.WriteLine("For " + item.Value + " press " + item.Key);
                 ;
             }
@@ -65,6 +66,7 @@ namespace PlayChannelCLI
             {
                 DiceGame.DiceGame currentGame = new DiceGame.DiceGame();
                 currentGame.Game(player,3,6);
+                
 
                 Console.WriteLine(currentGame.result);
     
@@ -72,7 +74,7 @@ namespace PlayChannelCLI
             else if (inputInt == 2)
             {
                 Console.WriteLine("This still needs to be implemented");
-                SelectGame(player);
+                SelectGame(player); //this is what is called a Recursive call. i.e., this method is calling itself
             }
             else
             {

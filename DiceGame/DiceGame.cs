@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static DiceGame.InterfaceManager;
 
 namespace DiceGame
 {
@@ -17,9 +18,13 @@ namespace DiceGame
          int shoveDie { get; set; }
 
 
+
         public void Game(TheHouse.Player player, int diceAmount, int diceType)
         {
+            
+            
             Console.WriteLine("Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!");
+           
 
             // initialize
             DiceGame currentGame = new DiceGame();
@@ -164,5 +169,10 @@ namespace DiceGame
             return (betAmount);
 
         }
+
+
+
+
+
     }
 }
