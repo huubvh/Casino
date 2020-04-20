@@ -8,8 +8,8 @@ namespace DiceGame
     {
         public List<int> PlayerDice { get; set; }
 
-        public int pair { get; set; }
-        public bool Result { get; set; }
+        public int Pair { get; set; }
+        public bool Win { get; set; }
 
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using static DiceGame.InterfaceManager;
+
 
 namespace DiceGame
 {
@@ -8,73 +8,87 @@ namespace DiceGame
 
     {
          public Enums.resultType result { get; set; }
-         int bet { get; set; }
-         int win { get; set; }
-         int pushDie { get; set; }
-         PlayerTurn playerTurn { get; set; }
+         public int bet { get; set; }
+         public int win { get; set; }
+         public int pushDie { get; set; }
+         public PlayerTurn playerTurn { get; set; }
+         public int shoveDie { get; set; }
+         public int diceAmount { get; set; }
+         public int diceType { get; set; }
+         
+        // welcome message
+        // enter bet
+        // display what the push is
+        // start playerturns
+        // // 
+        // display result message
 
-         int diceAmount { get; set; }
-         int diceType { get; set; }
-         int shoveDie { get; set; }
-
-
-
-        public void Game(TheHouse.Player player, int diceAmount, int diceType)
+        public string GameSummary()
         {
-            
-            
-            Console.WriteLine("Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!");
-           
+            string gameSummary = "Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!";
+            return (gameSummary);
+        }
 
-            // initialize
-            DiceGame currentGame = new DiceGame();
-            currentGame.playerTurn = new PlayerTurn();
-            currentGame.playerTurn.PlayerDice = new List<int>();
-            currentGame.diceAmount = diceAmount;
-            currentGame.diceType = diceType;
-            currentGame.bet = EnterBet(player);
-
-            //start
-            currentGame.pushDie = Dice.DiceRoll(currentGame.diceType);
-            Console.WriteLine("\nThe push is " + currentGame.pushDie);
-
-            //players turn
-            currentGame.playerTurn = PlayerRolls(currentGame);
-
-            if (currentGame.playerTurn.Result)
+        public bool checkGameExistence(GameManager.GamesCatalog gamesCatalog, int selectedGame) 
+        {
+            //check if game exists    
+            foreach (var item in gamesCatalog.AllGames)
             {
-                //win
-                currentGame.result = Enums.resultType.winDirect;
+                if (selectedGame == item.Key)
+                {
+                    return true;
+                }
+            }
+            return false;
+            
+        }
+
+        public string Push()
+        {
+            pushDie = Dice.DiceRoll(diceType);
+            string pushMessage = "\nThe house has rolled the Push. The Push is a " + pushDie;
+            return pushMessage;
+        }
+        public void Game(TheHouse.Player player)
+        {
+            // players turn
+            playerTurn.Win = PlayerRolls();
+
+            if (!playerTurn.Win )
+            {
+                // go to shove
+                result = Shove();
             }
             else
             {
-                // go to shove
-                currentGame.result = Shove(currentGame);
+                //win
+                result = Enums.resultType.winDirect;
+
             }
 
-            switch (currentGame.result)
+            switch (result)
             {
                 case Enums.resultType.winDirect:
-                    currentGame.win = currentGame.bet * 2;
-                    Console.WriteLine("You won! Single payout, you win " + currentGame.win + "!");
-                    player.Credits += currentGame.win - currentGame.bet;
+                    win = bet * 2;
+                    Console.WriteLine("You won! Single payout, you win " + win + "!");
+                    player.Credits += win - bet;
                     break;
                 case Enums.resultType.winShove:
-                    currentGame.win = currentGame.bet * 10;
-                    player.Credits += currentGame.win - currentGame.bet;
-                    Console.WriteLine("You won the Shove! Nine times payout, you win " + currentGame.win + "!");
+                    win = bet * 10;
+                    player.Credits += win - bet;
+                    Console.WriteLine("You won the Shove! Nine times payout, you win " + win + "!");
                     break;
                 case Enums.resultType.lose:
                     Console.WriteLine("You have lost, better luck next time");
-                    player.Credits -= currentGame.bet;
+                    player.Credits -= bet;
                     break;
                 default:
                     Console.WriteLine("An error has occurred, We cannot determine the outcome of the game.");
                     break;
 
-
+            
             }
-
+            /*
             Console.WriteLine("\nYour current balance = " + player.Credits);
             Console.WriteLine("\nPress 'p' to play again, press any other key to end the game");
             string input = Console.ReadLine();
@@ -86,22 +100,23 @@ namespace DiceGame
             {
                 Environment.Exit(2);
             }
-
+            */
         }
 
-        public static PlayerTurn PlayerRolls(DiceGame inputGame)
+        public bool PlayerRolls()
         {
             List<int> currentGameDice = new List<int>();
-            currentGameDice.Add(inputGame.pushDie);
+            currentGameDice.Add(pushDie);
 
-            PlayerTurn currentTurn = inputGame.playerTurn;
+            PlayerTurn currentTurn = playerTurn;
+            currentTurn.PlayerDice = new List<int>();
 
             int loop = 0;
-            while (loop < inputGame.diceAmount)
+            while (loop < diceAmount)
             {
                 Console.WriteLine("\nPress a key to roll a die");
                 Console.ReadKey();
-                int roll = Dice.DiceRoll(inputGame.diceType);
+                int roll = Dice.DiceRoll(diceType);
                 Console.WriteLine("\t\tYou've rolled a " + roll);
                 currentTurn.PlayerDice.Add(roll);
 
@@ -109,11 +124,11 @@ namespace DiceGame
                 {
                     if (i == roll)
                     {
-                        currentTurn.pair = i;
-                        Console.WriteLine("With this roll, you have pair of " + roll + "'s. Your turn has ended");
-                        inputGame.playerTurn.Result = false;
-                        currentTurn.Result = false;
-                        return (currentTurn);
+                        currentTurn.Pair = i;
+                        Console.WriteLine("With this roll, you have pair of " + roll + "'s. Your turn has ended because you've rolled a pair.");
+                        playerTurn.Win = false;
+                        currentTurn.Win = false;
+                        return (currentTurn.Win);
                     }
 
                 }
@@ -122,53 +137,38 @@ namespace DiceGame
 
                 loop++;
             }
-            currentTurn.Result = true;
-            return currentTurn;
+            currentTurn.Win = true;
+            return currentTurn.Win;
 
         }
 
-        public static Enums.resultType Shove(DiceGame inputGame)
+        public Enums.resultType Shove()
         {
-            DiceGame shove = new DiceGame();
-            shove.shoveDie = Dice.DiceRoll(inputGame.diceType);
+            shoveDie = Dice.DiceRoll(diceType);
             Console.WriteLine("\nÝou've got one chance to save yourself!");
-            Console.WriteLine("\nPress a key to roll the die. You have to roll a " + inputGame.playerTurn.pair + " to win.");
+            Console.WriteLine("\nPress a key to roll the die. You have to roll a " + playerTurn.Pair + " to win.");
             Console.ReadKey();
-            Console.WriteLine("\tYou've rolled a " + shove.shoveDie + "!");
+            Console.WriteLine("\tYou've rolled a " + shoveDie + "!");
 
-            if (shove.shoveDie == inputGame.playerTurn.pair)
+            if (shoveDie == playerTurn.Pair)
             {
-                shove.result = Enums.resultType.winShove;
+                result = Enums.resultType.winShove;
 
             }
             else
             {
-                shove.result = Enums.resultType.lose;
+                result = Enums.resultType.lose;
             }
 
-            return shove.result;
+            return result;
         }
 
-        public static int EnterBet(TheHouse.Player player)
+        public void EnterBet(int playerBet)
         {
-            int betAmount = 0;
-            Console.WriteLine("Your current balance = " + player.Credits);
-            Console.WriteLine("How much do you want to bet?");
-            string betAmountString = Console.ReadLine();
-
-            try
-            {
-                betAmount = int.Parse(betAmountString);
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine($"you have not entered a valid amount");
-                EnterBet(player);
-            }
-
-            return (betAmount);
-
+            bet = playerBet;
         }
+
+  
 
 
 
