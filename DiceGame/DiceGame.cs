@@ -49,7 +49,6 @@ namespace DiceGame
             string pushMessage = "\nThe house has rolled the Push. The Push is a " + pushDie;
             return pushMessage;
         }
-
         public void Game(TheHouse.Player player)
         {
             // players turn

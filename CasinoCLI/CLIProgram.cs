@@ -27,14 +27,12 @@ namespace PlayChannelCLI
                 Console.WriteLine("For " + item.Value + " press " + item.Key);
             }
 
-
-
             UserSelectGame();
             
             //start selected game
             while (keepPlaying)
             {
-                PlayGame(selectedGame);    
+                StartGame(selectedGame);    
             } 
 
             Console.WriteLine("Thanks for Playing!");
@@ -87,76 +85,15 @@ namespace PlayChannelCLI
             return true;           
         }
 
-        bool PlayGame(int selectedGame)
+        bool StartGame(int selectedGame)
         {
+            CLIPlayDiceGame diceGame = new CLIPlayDiceGame();
 
-            keepPlaying = PlayDiceGame(player);
+            keepPlaying = diceGame.PlayDiceGame(player, currentGame);
             if (!keepPlaying) { return false; }
             else { return true; }
-            
-        }
-
-        
-        bool PlayDiceGame(TheHouse.Player player)
-        {
-
-            Console.WriteLine(currentGame.GameSummary());
-            currentGame.diceAmount = 3;
-            currentGame.diceType = 6;
-
-            //bet
-            currentGame.bet = PlaceBet();
-
-            //push
-            string push = currentGame.Push();
-            Console.WriteLine(push);
-
-            // playerturns
-            currentGame.Game(player);
-
-            // end of game
-            Console.WriteLine("\nYour current balance = " + player.Credits);
-            Console.WriteLine("\nPress 'p' to play again, press any other key to end the game");
-
-            string input = Console.ReadLine();
-            if (input == "p")
-            {
-                keepPlaying = true;
-                return (keepPlaying);
-            }
-            else
-            {
-                keepPlaying = false;
-                return (keepPlaying);
-            }
 
         }
-
-        int PlaceBet()
-        {
-
-            Console.WriteLine("Your current balance = " + player.Credits);
-            Console.WriteLine("How much do you want to bet?");
-
-            int betAmount = 0;
-            string betAmountString = Console.ReadLine();
-
-            try
-            {
-                betAmount = int.Parse(betAmountString);
-                return (betAmount);
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine($"you have not entered a valid amount");
-                PlaceBet();
-            }
-            return 0;
-
-        }
-
-
-
         
     }
 }
