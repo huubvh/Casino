@@ -7,14 +7,14 @@ namespace DiceGame
     public class DiceGame
 
     {
-         public Enums.resultType result { get; set; }
-         public int bet { get; set; }
-         public int win { get; set; }
-         public int pushDie { get; set; }
-         public PlayerTurn playerTurn { get; set; }
-         public int shoveDie { get; set; }
-         public int diceAmount { get; set; }
-         public int diceType { get; set; }
+        public Enums.resultType result;
+        public int bet;
+        public int win; 
+        public int pushDie;
+        public PlayerTurn playerTurn = new PlayerTurn();
+        public int shoveDie;
+        public int diceAmount;
+        public int diceType;
          
         // welcome message
         // enter bet
@@ -49,6 +49,7 @@ namespace DiceGame
             string pushMessage = "\nThe house has rolled the Push. The Push is a " + pushDie;
             return pushMessage;
         }
+
         public void Game(TheHouse.Player player)
         {
             // players turn
@@ -118,7 +119,7 @@ namespace DiceGame
                 Console.ReadKey();
                 int roll = Dice.DiceRoll(diceType);
                 Console.WriteLine("\t\tYou've rolled a " + roll);
-                currentTurn.PlayerDice.Add(roll);
+                playerTurn.PlayerDice.Add(roll);
 
                 foreach (int i in currentGameDice)
                 {

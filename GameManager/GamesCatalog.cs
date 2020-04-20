@@ -18,13 +18,13 @@ namespace GameManager
                 newGame.GameType = "Dice";
                 newGame.GameOdds = 0.93;
                 allGames.Add(newGame);
-
+                /*
                 GameManager.PublishedGame newGame2 = new GameManager.PublishedGame();
                 newGame2.GameName = "CardGame";
                 newGame2.GameType = "Cards";
                 newGame2.GameOdds = 0.95;
                 allGames.Add(newGame2);
-                
+                */
                 int key = 1;
                 var gamesCatalog = new Dictionary<int, string>();
 

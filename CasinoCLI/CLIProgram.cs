@@ -8,6 +8,7 @@ namespace PlayChannelCLI
         bool keepPlaying = true;
         TheHouse.Player player = new TheHouse.Player();
         DiceGame.DiceGame currentGame = new DiceGame.DiceGame();
+        GameManager.GamesCatalog catalog = new GameManager.GamesCatalog();
         bool validatedInput = false;
         int selectedGame;
         bool gameExists = false;
@@ -21,12 +22,28 @@ namespace PlayChannelCLI
             player.Credits = 100;
 
             // get available games
-            GameManager.GamesCatalog catalog = new GameManager.GamesCatalog();
             foreach (var item in catalog.AllGames)
             {
                 Console.WriteLine("For " + item.Value + " press " + item.Key);
             }
 
+
+
+            UserSelectGame();
+            
+            //start selected game
+            while (keepPlaying)
+            {
+                PlayGame(selectedGame);    
+            } 
+
+            Console.WriteLine("Thanks for Playing!");
+            Environment.Exit(2);
+            
+        }
+
+        void UserSelectGame()
+        {
             //get and validate input
             while (!validatedInput)
             {
@@ -34,16 +51,7 @@ namespace PlayChannelCLI
                 validatedInput = ValidateInput(input, catalog);
             }
 
-            //start selected game
-            {
-                PlayGame(selectedGame);
-            } while (keepPlaying)
-
-            Console.WriteLine("Thanks for Playing!");
-            Environment.Exit(2);
-            
         }
-
         bool ValidateInput(string input, GameManager.GamesCatalog catalog)
         {
 
@@ -82,23 +90,13 @@ namespace PlayChannelCLI
         bool PlayGame(int selectedGame)
         {
 
-            switch (selectedGame)
-            {
-                case 1:
-                    keepPlaying = PlayDiceGame(player);
-                    if (keepPlaying) { PlayDiceGame(player); }
-                    return true;
-                case 2:
-                    Console.WriteLine("This game has not been implemented.");
-                    return false;
-                default:
-                    {
-                        Console.WriteLine("This is not a valid choice");
-                        return false;
-                    }
-            }
+            keepPlaying = PlayDiceGame(player);
+            if (!keepPlaying) { return false; }
+            else { return true; }
+            
         }
 
+        
         bool PlayDiceGame(TheHouse.Player player)
         {
 
@@ -114,11 +112,7 @@ namespace PlayChannelCLI
             Console.WriteLine(push);
 
             // playerturns
-
             currentGame.Game(player);
-
-
-
 
             // end of game
             Console.WriteLine("\nYour current balance = " + player.Credits);
