@@ -27,6 +27,8 @@ namespace PlayChannelCLI
                 Console.WriteLine("For " + item.Value + " press " + item.Key);
             }
 
+            // fill the catalog with games, but this is not yet necessary
+
             UserSelectGame();
             
             //start selected game
