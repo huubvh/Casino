@@ -11,7 +11,7 @@ namespace PlayChannelCLI
         {
             DiceGame.DiceGame currentGame = new DiceGame.DiceGame();
 
-            Console.WriteLine(currentGame.GameSummary());
+            currentGame.GameSummary(io);
             currentGame.diceAmount = 3;
             currentGame.diceType = 6;
 
@@ -37,12 +37,11 @@ namespace PlayChannelCLI
             }
 
             //push
-            string push = currentGame.Push();
-            io.DisplayMessage(push);
-
+            currentGame.Push(io);
+           
             // playerturns
-            string result = currentGame.Game(player);
-            io.DisplayMessage(result);
+            currentGame.Game(player,io);
+            
 
             // end of game
             io.DisplayMessage("\nYour current balance = " + player.Credits);

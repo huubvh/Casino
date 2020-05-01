@@ -24,28 +24,31 @@ namespace DiceGame
         // display result message
 
 
-        public string GameSummary()
+        public void GameSummary(TheHouse.IPlayerInterface io)
         {
+            
             string gameSummary = "Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!";
-            return (gameSummary);
+            io.DisplayMessage(gameSummary);
+          
 
         }
 
-        public string Push()
+        public void Push(TheHouse.IPlayerInterface io)
         {
+
             pushDie = Dice.DiceRoll(diceType);
             string pushMessage = "\nThe house has rolled the Push. The Push is a " + pushDie;
-            return pushMessage;
+            io.DisplayMessage(pushMessage);
         }
-        public string Game(TheHouse.Player player)
+        public void Game(TheHouse.Player player, TheHouse.IPlayerInterface io)
         {
             // players turn
-            playerTurn.Win = PlayerRolls();
+            playerTurn.Win = PlayerRolls(io);
 
             if (!playerTurn.Win )
             {
                 // go to shove
-                result = Shove();
+                result = Shove(io);
             }
             else
             {
@@ -76,23 +79,11 @@ namespace DiceGame
 
             
             }
-            return(message);
-            /*
-            Console.WriteLine("\nYour current balance = " + player.Credits);
-            Console.WriteLine("\nPress 'p' to play again, press any other key to end the game");
-            string input = Console.ReadLine();
-            if (input == "p")
-            {
-                Game(player,3,6);
-            }
-            else
-            {
-                Environment.Exit(2);
-            }
-            */
+            io.DisplayMessage(message);
+      
         }
 
-        public bool PlayerRolls()
+        public bool PlayerRolls(TheHouse.IPlayerInterface io)
         {
             List<int> currentGameDice = new List<int>();
             currentGameDice.Add(pushDie);
@@ -103,10 +94,10 @@ namespace DiceGame
             int loop = 0;
             while (loop < diceAmount)
             {
-                Console.WriteLine("\nPress a key to roll a die");
-                Console.ReadKey();
+                io.DisplayMessage("\nPress a key to roll a die");
+                io.GetInput();
                 int roll = Dice.DiceRoll(diceType);
-                Console.WriteLine("\t\tYou've rolled a " + roll);
+                io.DisplayMessage("\t\tYou've rolled a " + roll);
                 playerTurn.PlayerDice.Add(roll);
 
                 foreach (int i in currentGameDice)
@@ -114,7 +105,7 @@ namespace DiceGame
                     if (i == roll)
                     {
                         currentTurn.Pair = i;
-                        Console.WriteLine("With this roll, you have pair of " + roll + "'s. Your turn has ended because you've rolled a pair.");
+                        io.DisplayMessage("With this roll, you have pair of " + roll + "'s. Your turn has ended because you've rolled a pair.");
                         playerTurn.Win = false;
                         currentTurn.Win = false;
                         return (currentTurn.Win);
@@ -131,13 +122,13 @@ namespace DiceGame
 
         }
 
-        public Enums.resultType Shove()
+        public Enums.resultType Shove(TheHouse.IPlayerInterface io)
         {
             shoveDie = Dice.DiceRoll(diceType);
-            Console.WriteLine("\nÝou've got one chance to save yourself!");
-            Console.WriteLine("\nPress a key to roll the die. You have to roll a " + playerTurn.Pair + " to win.");
-            Console.ReadKey();
-            Console.WriteLine("\tYou've rolled a " + shoveDie + "!");
+            io.DisplayMessage("\nÝou've got one chance to save yourself!");
+            io.DisplayMessage("\nPress a key to roll the die. You have to roll a " + playerTurn.Pair + " to win.");
+            io.GetInput();
+            io.DisplayMessage("\tYou've rolled a " + shoveDie + "!");
 
             if (shoveDie == playerTurn.Pair)
             {
@@ -157,7 +148,7 @@ namespace DiceGame
             bet = playerBet;
         }
 
-  
+
 
 
 
