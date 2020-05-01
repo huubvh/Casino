@@ -7,28 +7,48 @@ namespace PlayChannelCLI
     class CLIPlayDiceGame
     {
 
-        public bool PlayDiceGame(TheHouse.Player player, DiceGame.DiceGame currentGame)
+        public bool PlayDiceGame(TheHouse.Player player, Program.ConsolePlayerInterface io)
         {
+            DiceGame.DiceGame currentGame = new DiceGame.DiceGame();
 
             Console.WriteLine(currentGame.GameSummary());
             currentGame.diceAmount = 3;
             currentGame.diceType = 6;
 
             //bet
-            currentGame.bet = PlaceBet(player);
+            bool betplaced = false;
+            while (!betplaced)
+            {
+
+                io.DisplayMessage("Your current balance = " + player.Credits);
+                io.DisplayMessage("How much do you want to bet?");
+
+                string betAmountString = io.GetInput();
+
+                try
+                {
+                    currentGame.bet = int.Parse(betAmountString);
+                    betplaced = true;
+                }
+                catch (FormatException)
+                {
+                    io.DisplayMessage($"you have not entered a valid amount");
+                }
+            }
 
             //push
             string push = currentGame.Push();
-            Console.WriteLine(push);
+            io.DisplayMessage(push);
 
             // playerturns
-            currentGame.Game(player);
+            string result = currentGame.Game(player);
+            io.DisplayMessage(result);
 
             // end of game
-            Console.WriteLine("\nYour current balance = " + player.Credits);
-            Console.WriteLine("\nPress 'p' to play again, press any other key to end the game");
+            io.DisplayMessage("\nYour current balance = " + player.Credits);
+            io.DisplayMessage("\nPress 'p' to play again, press any other key to end the game");
 
-            string input = Console.ReadLine();
+            string input = io.GetInput();
             if (input == "p")
             {
                 return true;
@@ -37,30 +57,6 @@ namespace PlayChannelCLI
             {
                 return false;
             }
-
-        }
-
-        int PlaceBet(TheHouse.Player player)
-        {
-
-            Console.WriteLine("Your current balance = " + player.Credits);
-            Console.WriteLine("How much do you want to bet?");
-
-            int betAmount = 0;
-            string betAmountString = Console.ReadLine();
-
-            try
-            {
-                betAmount = int.Parse(betAmountString);
-                return (betAmount);
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine($"you have not entered a valid amount");
-                PlaceBet(player);
-            }
-            return 0;
-
         }
     }
 }

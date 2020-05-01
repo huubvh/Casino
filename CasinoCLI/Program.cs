@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PlayChannelCLI
 {
@@ -8,8 +6,18 @@ namespace PlayChannelCLI
     {
         public static void Main(string[] args)
         {
+            ConsolePlayerInterface io = new ConsolePlayerInterface();
             PlayseatCLI playSeat = new PlayseatCLI();
-            playSeat.Run();
+            playSeat.Run(io);
+        }
+
+        public class ConsolePlayerInterface : TheHouse.IPlayerInterface
+        {
+            public void DisplayMessage(string message, params object[] parameters) =>
+                Console.WriteLine(string.Format(message, parameters));
+
+            public string GetInput() =>
+                Console.ReadLine();
         }
 
     }

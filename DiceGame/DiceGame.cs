@@ -15,7 +15,7 @@ namespace DiceGame
         public int shoveDie;
         public int diceAmount;
         public int diceType;
-         
+
         // welcome message
         // enter bet
         // display what the push is
@@ -23,24 +23,12 @@ namespace DiceGame
         // // 
         // display result message
 
+
         public string GameSummary()
         {
             string gameSummary = "Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!";
             return (gameSummary);
-        }
 
-        public bool checkGameExistence(GameManager.GamesCatalog gamesCatalog, int selectedGame) 
-        {
-            //check if game exists    
-            foreach (var item in gamesCatalog.AllGames)
-            {
-                if (selectedGame == item.Key)
-                {
-                    return true;
-                }
-            }
-            return false;
-            
         }
 
         public string Push()
@@ -49,7 +37,7 @@ namespace DiceGame
             string pushMessage = "\nThe house has rolled the Push. The Push is a " + pushDie;
             return pushMessage;
         }
-        public void Game(TheHouse.Player player)
+        public string Game(TheHouse.Player player)
         {
             // players turn
             playerTurn.Win = PlayerRolls();
@@ -65,29 +53,30 @@ namespace DiceGame
                 result = Enums.resultType.winDirect;
 
             }
-
+            string message;
             switch (result)
             {
                 case Enums.resultType.winDirect:
                     win = bet * 2;
-                    Console.WriteLine("You won! Single payout, you win " + win + "!");
+                    message = ("You won! Single payout, you win " + win + "!");
                     player.Credits += win - bet;
                     break;
                 case Enums.resultType.winShove:
                     win = bet * 10;
                     player.Credits += win - bet;
-                    Console.WriteLine("You won the Shove! Nine times payout, you win " + win + "!");
+                    message = ("You won the Shove! Nine times payout, you win " + win + "!");
                     break;
                 case Enums.resultType.lose:
-                    Console.WriteLine("You have lost, better luck next time");
+                    message = ("You have lost, better luck next time");
                     player.Credits -= bet;
                     break;
                 default:
-                    Console.WriteLine("An error has occurred, We cannot determine the outcome of the game.");
+                    message = ("An error has occurred, We cannot determine the outcome of the game.");
                     break;
 
             
             }
+            return(message);
             /*
             Console.WriteLine("\nYour current balance = " + player.Credits);
             Console.WriteLine("\nPress 'p' to play again, press any other key to end the game");

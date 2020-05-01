@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameManager
+namespace TheHouse
 {
     public class GamesCatalog
     {
@@ -13,7 +13,7 @@ namespace GameManager
                 List<PublishedGame> allGames = new List<PublishedGame>();
 
                 //initialize data because we do not have a database implemented yet
-                GameManager.PublishedGame newGame = new GameManager.PublishedGame();
+                PublishedGame newGame = new PublishedGame();
                 newGame.GameName = "DiceGame";
                 newGame.GameType = "Dice";
                 newGame.GameOdds = 0.93;
@@ -37,6 +37,27 @@ namespace GameManager
 
             }
         }
+
+        public bool checkGameExistence(TheHouse.GamesCatalog gamesCatalog, int selectedGame)
+        {
+            //check if game exists    
+            foreach (var item in gamesCatalog.AllGames)
+            {
+                if (selectedGame == item.Key)
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+    }
+    public class PublishedGame
+    {
+        public string GameName { get; set; }
+        public string GameType { get; set; }
+        public double GameOdds { get; set; }
 
 
     }
