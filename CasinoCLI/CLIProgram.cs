@@ -1,7 +1,5 @@
 ﻿using System;
 
-
-
 namespace PlayChannelCLI
 {
     class PlayseatCLI
@@ -9,21 +7,33 @@ namespace PlayChannelCLI
         bool keepPlaying = true;
         TheHouse.Player player = new TheHouse.Player();
         TheHouse.GamesCatalog catalog = new TheHouse.GamesCatalog();
-        bool validatedInput = false;
         int selectedGame;
         bool gameExists = false;
 
 
 
-        public void Run( Program.ConsolePlayerInterface io)
+        public void Run(Program.ConsolePlayerInterface io)
         {
             // post welcome message
             string welcomeMessage = TheHouse.WelcomeDesk.Welcome();
-            
+
             io.DisplayMessage(welcomeMessage);
 
             player.Credits = 100;
 
+
+            while (keepPlaying)
+            {
+                Play(io);
+
+            }
+            io.DisplayMessage("Thanks for Playing!");
+            Environment.Exit(2);
+
+        }
+
+        public void Play(Program.ConsolePlayerInterface io)
+        {
             // get available games
             foreach (var item in catalog.AllGames)
             {
@@ -32,53 +42,43 @@ namespace PlayChannelCLI
 
             // fill the catalog with games, but this is not yet necessary
 
-            UserSelectGame(io);
-            
-            //start selected game
-            while (keepPlaying)
-            {
-                StartGame(selectedGame,io);    
-            }
 
-            io.DisplayMessage("Thanks for Playing!");
-            Environment.Exit(2);
-            
-        }
-
-        void UserSelectGame(Program.ConsolePlayerInterface io)
-        {
             //get and validate input
+            bool validatedInput = false;
             while (!validatedInput)
             {
-                string input = Console.ReadLine();
-                validatedInput = ValidateInput(input, catalog, io);
-            }
+                string inputString = io.GetInput();
+                ValidateInt(inputString);
 
-        }
-        bool ValidateInput(string input, TheHouse.GamesCatalog catalog, Program.ConsolePlayerInterface io)
-        {
-
-            validatedInput = ValidateInt(input);
-            if (!validatedInput)
-            {
-                io.DisplayMessage($"'{input}' is not a valid input");
-                io.DisplayMessage($"Please try again");
-                return false;
-            }
-            else
-            {
-                selectedGame = Int32.Parse(input);
-                gameExists = catalog.checkGameExistence(catalog, selectedGame);
-                if (!gameExists)
+                validatedInput = ValidateInt(inputString);
+                if (!validatedInput)
                 {
-                    io.DisplayMessage($"'{input}' does not exist");
+                    io.DisplayMessage($"'{inputString}' is not a valid input");
                     io.DisplayMessage($"Please try again");
-                    return false;
+                    
                 }
-                else { return true; }
+                else
+                {
+                    selectedGame = Int32.Parse(inputString);
+                    gameExists = catalog.checkGameExistence(catalog, selectedGame);
+                    if (!gameExists)
+                    {
+                        io.DisplayMessage($"'{inputString}' does not exist");
+                        io.DisplayMessage($"Please try again");
+                        validatedInput = false;
+                    }
+                    else 
+                    {
+                        keepPlaying = StartGame(selectedGame, player, io);
+
+                    }
+                }
+
             }
+
         }
 
+         
         bool ValidateInt(string input)
         {
             //validate and return input
@@ -90,15 +90,33 @@ namespace PlayChannelCLI
             return true;           
         }
 
-        bool StartGame(int selectedGame, Program.ConsolePlayerInterface io)
+        public bool StartGame(int selectedGame, TheHouse.Player player, Program.ConsolePlayerInterface io)
         {
+
             switch (selectedGame)
             {
-                case 1: 
-                    CLIPlayDiceGame diceGame = new CLIPlayDiceGame();
-                    keepPlaying = diceGame.PlayDiceGame(player, io);
-                    if (!keepPlaying) { return false; }
-                    else { return true; }
+                case 1:
+                    DiceGame.DiceGame diceGame = new DiceGame.DiceGame();
+                    diceGame.PlayDiceGame(player, io);
+                    // end of game
+                    io.DisplayMessage("\nYour current balance = " + player.Credits);
+                    io.DisplayMessage("\nPress 'p' to play again, press any other key to end the game");
+
+                    string input = io.GetInput();
+                    if (input == "p")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                case 2:
+                    io.DisplayMessage($"This game has not yet been implemented");
+                    return true;
+                case 3:
+                    io.DisplayMessage($"This game has not yet been implemented");
+                    return true;
 
                 default:
                     return false;
@@ -106,6 +124,6 @@ namespace PlayChannelCLI
 
 
         }
-        
+
     }
 }

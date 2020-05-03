@@ -18,13 +18,19 @@ namespace TheHouse
                 newGame.GameType = "Dice";
                 newGame.GameOdds = 0.93;
                 allGames.Add(newGame);
-                /*
-                GameManager.PublishedGame newGame2 = new GameManager.PublishedGame();
-                newGame2.GameName = "CardGame";
+                
+                PublishedGame newGame2 = new PublishedGame();
+                newGame2.GameName = "Poker";
                 newGame2.GameType = "Cards";
                 newGame2.GameOdds = 0.95;
                 allGames.Add(newGame2);
-                */
+
+                PublishedGame newGame3 = new PublishedGame();
+                newGame3.GameName = "Black Jack";
+                newGame3.GameType = "Cards";
+                newGame3.GameOdds = 0.95;
+                allGames.Add(newGame3);
+
                 int key = 1;
                 var gamesCatalog = new Dictionary<int, string>();
 

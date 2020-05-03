@@ -24,22 +24,54 @@ namespace DiceGame
         // display result message
 
 
+        public void PlayDiceGame(TheHouse.Player player, TheHouse.IPlayerInterface io)
+        {
+            DiceGame currentGame = new DiceGame();
+
+            currentGame.GameSummary(io);
+            currentGame.diceAmount = 3;
+            currentGame.diceType = 6;
+
+            //bet
+            bool betplaced = false;
+            while (!betplaced)
+            {
+
+                io.DisplayMessage($"Your current balance = {player.Credits}");
+                io.DisplayMessage("How much do you want to bet?");
+
+                string betAmountString = io.GetInput();
+
+                try
+                {
+                    currentGame.bet = int.Parse(betAmountString);
+                    betplaced = true;
+                }
+                catch (FormatException)
+                {
+                    io.DisplayMessage($"you have not entered a valid amount");
+                }
+            }
+
+            //push
+            pushDie = Dice.DiceRoll(diceType);
+            string pushMessage = ($"\nThe house has rolled the Push. The Push is a {pushDie}");
+            io.DisplayMessage(pushMessage);
+
+            // playerturns
+            currentGame.Game(player, io);
+
+        }
+
         public void GameSummary(TheHouse.IPlayerInterface io)
         {
             
-            string gameSummary = "Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!";
+            string gameSummary = ("Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!");
             io.DisplayMessage(gameSummary);
           
 
         }
 
-        public void Push(TheHouse.IPlayerInterface io)
-        {
-
-            pushDie = Dice.DiceRoll(diceType);
-            string pushMessage = "\nThe house has rolled the Push. The Push is a " + pushDie;
-            io.DisplayMessage(pushMessage);
-        }
         public void Game(TheHouse.Player player, TheHouse.IPlayerInterface io)
         {
             // players turn
@@ -149,10 +181,36 @@ namespace DiceGame
         }
 
 
+        public class PlayerTurn
+        {
+            public List<int> PlayerDice { get; set; }
+
+            public int Pair { get; set; }
+            public bool Win { get; set; }
+
+        }
 
 
+        public class Dice
+        {
 
+            public static int DiceRoll(int d)
+            {
+                Random roll = new Random();
+                int dieValue = roll.Next(1, d + 1);
+                return dieValue;
+            }
+        }
 
+        public class Enums
+        {
+            public enum resultType
+            {
+                winDirect,
+                winShove,
+                lose,
+            };
+        }
 
     }
 }
