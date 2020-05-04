@@ -10,5 +10,7 @@ namespace TheHouse
         public string Name { get; set; }
         public double Credits { get; set; }
 
+
+
     }
 }

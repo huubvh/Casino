@@ -4,9 +4,7 @@ using System.Text;
 
 namespace TheHouse
 {
-    class InputOutput
-    {
-    }
+
 
     public interface IPlayerInterface
     {

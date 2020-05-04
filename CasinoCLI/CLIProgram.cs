@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace PlayChannelCLI
 {
@@ -6,16 +7,15 @@ namespace PlayChannelCLI
     {
         bool keepPlaying = true;
         TheHouse.Player player = new TheHouse.Player();
-        TheHouse.GamesCatalog catalog = new TheHouse.GamesCatalog();
+        GameLibrary.GamesCatalog catalog = new GameLibrary.GamesCatalog();
         int selectedGame;
         bool gameExists = false;
-
-
+        
 
         public void Run(Program.ConsolePlayerInterface io)
         {
             // post welcome message
-            string welcomeMessage = TheHouse.WelcomeDesk.Welcome();
+            string welcomeMessage = TheHouse.CashiersDesk.Welcome();
 
             io.DisplayMessage(welcomeMessage);
 
@@ -78,6 +78,7 @@ namespace PlayChannelCLI
 
         }
 
+    
          
         bool ValidateInt(string input)
         {
@@ -90,13 +91,13 @@ namespace PlayChannelCLI
             return true;           
         }
 
-        public bool StartGame(int selectedGame, TheHouse.Player player, Program.ConsolePlayerInterface io)
+        bool StartGame(int selectedGame, TheHouse.Player player, Program.ConsolePlayerInterface io)
         {
 
             switch (selectedGame)
             {
                 case 1:
-                    DiceGame.DiceGame diceGame = new DiceGame.DiceGame();
+                    GameLibrary.DiceGame diceGame = new GameLibrary.DiceGame();
                     diceGame.PlayDiceGame(player, io);
                     // end of game
                     io.DisplayMessage("\nYour current balance = " + player.Credits);

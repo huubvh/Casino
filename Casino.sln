@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheHouse", "Casino\TheHouse
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayChannelCLI", "CasinoCLI\PlayChannelCLI.csproj", "{22BD960D-5729-419C-AAA1-3B7156E55F44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiceGame", "DiceGame\DiceGame.csproj", "{E19F6882-4B3E-44B5-B23C-BFC4FA426CBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameLibrary", "DiceGame\GameLibrary.csproj", "{E19F6882-4B3E-44B5-B23C-BFC4FA426CBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

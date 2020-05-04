@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace DiceGame
+namespace GameLibrary
 {
     public class DiceGame
 
@@ -15,14 +15,6 @@ namespace DiceGame
         public int shoveDie;
         public int diceAmount;
         public int diceType;
-
-        // welcome message
-        // enter bet
-        // display what the push is
-        // start playerturns
-        // // 
-        // display result message
-
 
         public void PlayDiceGame(TheHouse.Player player, TheHouse.IPlayerInterface io)
         {
@@ -187,13 +179,11 @@ namespace DiceGame
 
             public int Pair { get; set; }
             public bool Win { get; set; }
-
         }
 
 
         public class Dice
         {
-
             public static int DiceRoll(int d)
             {
                 Random roll = new Random();

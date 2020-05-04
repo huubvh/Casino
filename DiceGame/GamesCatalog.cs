@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TheHouse
+namespace GameLibrary
 {
     public class GamesCatalog
     {
@@ -44,7 +44,7 @@ namespace TheHouse
             }
         }
 
-        public bool checkGameExistence(TheHouse.GamesCatalog gamesCatalog, int selectedGame)
+        public bool checkGameExistence(GamesCatalog gamesCatalog, int selectedGame)
         {
             //check if game exists    
             foreach (var item in gamesCatalog.AllGames)
