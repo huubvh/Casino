@@ -113,8 +113,20 @@ namespace PlayChannelCLI
                         return false;
                     }
                 case 2:
-                    io.DisplayMessage($"This game has not yet been implemented");
-                    return true;
+                    GameLibrary.Poker poker = new GameLibrary.Poker();
+                    poker.PlayPoker(player, io);
+                    io.DisplayMessage("\nPress 'p' to play again, press any other key to end the game");
+
+                    input = io.GetInput();
+                    if (input == "p")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    
                 case 3:
                     io.DisplayMessage($"This game has not yet been implemented");
                     return true;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GameLibrary
 {
-    public class DiceGame
+    public class DiceGame 
 
     {
         public Enums.resultType result;
