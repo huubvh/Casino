@@ -6,6 +6,10 @@ namespace GameLibrary
 {
     public class GamesCatalog
     {
+        public GamesCatalog()
+        {
+
+        }
         public Dictionary<int, string> AllGames
         {
             get

@@ -4,72 +4,34 @@ using System.Collections.Generic;
 
 namespace GameLibrary
 {
-    public class DiceGame 
+    public class DiceGame
 
     {
         public Enums.resultType result;
         public int bet;
-        public int win; 
+        public int win;
         public int pushDie;
         public PlayerTurn playerTurn = new PlayerTurn();
+
         public int shoveDie;
         public int diceAmount;
         public int diceType;
 
         public void PlayDiceGame(TheHouse.Player player, TheHouse.IPlayerInterface io)
         {
-            DiceGame currentGame = new DiceGame();
-
-            currentGame.GameSummary(io);
-            currentGame.diceAmount = 3;
-            currentGame.diceType = 6;
-
-            //bet
-            bool betplaced = false;
-            while (!betplaced)
-            {
-
-                io.DisplayMessage($"Your current balance = {player.Credits}");
-                io.DisplayMessage("How much do you want to bet?");
-
-                string betAmountString = io.GetInput();
-
-                try
-                {
-                    currentGame.bet = int.Parse(betAmountString);
-                    betplaced = true;
-                }
-                catch (FormatException)
-                {
-                    io.DisplayMessage($"you have not entered a valid amount");
-                }
-            }
-
+            GameSummary(io); //static
+            diceAmount = 3;
+            diceType = 6;
+            bet = EnterBet(player,io);
+            // start game proper
             //push
             pushDie = Dice.DiceRoll(diceType);
             string pushMessage = ($"\nThe house has rolled the Push. The Push is a {pushDie}");
             io.DisplayMessage(pushMessage);
 
-            // playerturns
-            currentGame.Game(player, io);
-
-        }
-
-        public void GameSummary(TheHouse.IPlayerInterface io)
-        {
-            
-            string gameSummary = ("Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!");
-            io.DisplayMessage(gameSummary);
-          
-
-        }
-
-        public void Game(TheHouse.Player player, TheHouse.IPlayerInterface io)
-        {
             // players turn
-            playerTurn.Win = PlayerRolls(io);
-
-            if (!playerTurn.Win )
+            PlayerRolls(io, pushDie);
+            if (!playerTurn.Win)
             {
                 // go to shove
                 result = Shove(io);
@@ -101,19 +63,53 @@ namespace GameLibrary
                     message = ("An error has occurred, We cannot determine the outcome of the game.");
                     break;
 
-            
+
             }
             io.DisplayMessage(message);
-      
+
         }
 
-        public bool PlayerRolls(TheHouse.IPlayerInterface io)
+
+        public static void GameSummary(TheHouse.IPlayerInterface io)
+        {
+
+            string gameSummary = ("Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!");
+            io.DisplayMessage(gameSummary);
+        }
+
+
+        public int EnterBet(TheHouse.Player player, TheHouse.IPlayerInterface io)
+        {
+            bool betplaced = false;
+            int newBet = 0;
+            while (!betplaced)
+            {
+
+                io.DisplayMessage($"Your current balance = {player.Credits}");
+                io.DisplayMessage("How much do you want to bet?");
+
+                string betAmountString = io.GetInput();
+
+                try
+                {
+                    newBet = int.Parse(betAmountString);
+                    betplaced = true;
+
+                }
+                catch (FormatException)
+                {
+                    io.DisplayMessage($"you have not entered a valid amount");
+                }
+            }
+            return (newBet);
+        }
+
+        public void PlayerRolls(TheHouse.IPlayerInterface io, int pushDie)
         {
             List<int> currentGameDice = new List<int>();
             currentGameDice.Add(pushDie);
 
-            PlayerTurn currentTurn = playerTurn;
-            currentTurn.PlayerDice = new List<int>();
+
 
             int loop = 0;
             while (loop < diceAmount)
@@ -122,17 +118,17 @@ namespace GameLibrary
                 io.GetInput();
                 int roll = Dice.DiceRoll(diceType);
                 io.DisplayMessage("\t\tYou've rolled a " + roll);
-                playerTurn.PlayerDice.Add(roll);
+
 
                 foreach (int i in currentGameDice)
                 {
                     if (i == roll)
                     {
-                        currentTurn.Pair = i;
+                        playerTurn.Pair = i;
                         io.DisplayMessage("With this roll, you have pair of " + roll + "'s. Your turn has ended because you've rolled a pair.");
                         playerTurn.Win = false;
-                        currentTurn.Win = false;
-                        return (currentTurn.Win);
+                        playerTurn.Win = false;
+                        return;
                     }
 
                 }
@@ -141,8 +137,8 @@ namespace GameLibrary
 
                 loop++;
             }
-            currentTurn.Win = true;
-            return currentTurn.Win;
+            playerTurn.Win = true;
+            return;
 
         }
 
@@ -164,43 +160,41 @@ namespace GameLibrary
                 result = Enums.resultType.lose;
             }
 
-            return result;
-        }
-
-        public void EnterBet(int playerBet)
-        {
-            bet = playerBet;
+            return(result);
         }
 
 
-        public class PlayerTurn
-        {
-            public List<int> PlayerDice { get; set; }
-
-            public int Pair { get; set; }
-            public bool Win { get; set; }
-        }
-
-
-        public class Dice
-        {
-            public static int DiceRoll(int d)
-            {
-                Random roll = new Random();
-                int dieValue = roll.Next(1, d + 1);
-                return dieValue;
-            }
-        }
-
-        public class Enums
-        {
-            public enum resultType
-            {
-                winDirect,
-                winShove,
-                lose,
-            };
-        }
 
     }
+    public class PlayerTurn
+    {
+            
+        public List<int> PlayerDice { get; set; }
+
+        public int Pair { get; set; }
+        public bool Win { get; set; }
+    }
+
+
+    public class Dice
+    {
+        public static int DiceRoll(int d)
+        {
+            Random roll = new Random();
+            int dieValue = roll.Next(1, d + 1);
+            return dieValue;
+        }
+    }
+
+    public class Enums
+    {
+        public enum resultType
+        {
+            winDirect,
+            winShove,
+            lose,
+        };
+    }
+
+    
 }

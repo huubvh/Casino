@@ -98,6 +98,7 @@ namespace PlayChannelCLI
             {
                 case 1:
                     GameLibrary.DiceGame diceGame = new GameLibrary.DiceGame();
+
                     diceGame.PlayDiceGame(player, io);
                     // end of game
                     io.DisplayMessage("\nYour current balance = " + player.Credits);
