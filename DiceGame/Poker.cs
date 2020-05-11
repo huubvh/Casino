@@ -92,9 +92,9 @@ namespace GameLibrary
 
         public enum HandValue
         {
-            StraightFlush = 1,
+            StraightFlush = 1,// not using this one
             ThreeOfAKind = 2,
-            Straight = 3,
+            Straight = 3, //not using this one
             Flush = 4,
             Pair = 5,
             HighCard = 6,

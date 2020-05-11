@@ -27,7 +27,7 @@ namespace PlayChannelCLI
                 Play(io);
 
             }
-            io.DisplayMessage("Thanks for Playing!");
+            io.DisplayMessage("Thanks for Playing on PlaySeatCLI!");
             Environment.Exit(2);
 
         }

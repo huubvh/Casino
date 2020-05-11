@@ -28,14 +28,14 @@ namespace GameLibrary
             if (!playerTurn.Win)
             {
                 // go to shove
-                result = Shove(io);
+                result = Shove(io); //function
             }
             else
             {
                 //win
                 result = Enums.resultType.winDirect;
             }
-            io.DisplayMessage(Payout(result,player));
+            io.DisplayMessage(Payout(result,player)); //call a method with the result of a function
         }
 
 
@@ -45,7 +45,6 @@ namespace GameLibrary
             string gameSummary = ("Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!");
             io.DisplayMessage(gameSummary);
         }
-
 
         public int EnterBet(TheHouse.Player player, TheHouse.IPlayerInterface io)
         {
@@ -80,6 +79,7 @@ namespace GameLibrary
             string pushMessage = ($"\nThe house has rolled the Push. The Push is a {pushDie}");
             io.DisplayMessage(pushMessage);
         }
+
         public void PlayerRolls(TheHouse.IPlayerInterface io, int pushDie)
         {
 
