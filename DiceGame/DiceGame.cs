@@ -14,23 +14,17 @@ namespace GameLibrary
         public PlayerTurn playerTurn = new PlayerTurn();
 
         public int shoveDie;
-        public int diceAmount;
-        public int diceType;
+        public int diceAmount = 3;
+        public int diceType = 6;
 
         public void PlayDiceGame(TheHouse.Player player, TheHouse.IPlayerInterface io)
         {
-            GameSummary(io); //static
-            diceAmount = 3;
-            diceType = 6;
-            bet = EnterBet(player,io);
-            // start game proper
-            //push
-            pushDie = Dice.DiceRoll(diceType);
-            string pushMessage = ($"\nThe house has rolled the Push. The Push is a {pushDie}");
-            io.DisplayMessage(pushMessage);
 
-            // players turn
+            GameSummary(io); //static method
+            bet = EnterBet(player, io); //function
+            Push(io); //method
             PlayerRolls(io, pushDie);
+
             if (!playerTurn.Win)
             {
                 // go to shove
@@ -40,33 +34,8 @@ namespace GameLibrary
             {
                 //win
                 result = Enums.resultType.winDirect;
-
             }
-            string message;
-            switch (result)
-            {
-                case Enums.resultType.winDirect:
-                    win = bet * 2;
-                    message = ("You won! Single payout, you win " + win + "!");
-                    player.Credits += win - bet;
-                    break;
-                case Enums.resultType.winShove:
-                    win = bet * 10;
-                    player.Credits += win - bet;
-                    message = ("You won the Shove! Nine times payout, you win " + win + "!");
-                    break;
-                case Enums.resultType.lose:
-                    message = ("You have lost, better luck next time");
-                    player.Credits -= bet;
-                    break;
-                default:
-                    message = ("An error has occurred, We cannot determine the outcome of the game.");
-                    break;
-
-
-            }
-            io.DisplayMessage(message);
-
+            io.DisplayMessage(Payout(result,player));
         }
 
 
@@ -104,12 +73,18 @@ namespace GameLibrary
             return (newBet);
         }
 
+        public void Push(TheHouse.IPlayerInterface io)
+        {
+            //push
+            pushDie = Dice.DiceRoll(diceType);
+            string pushMessage = ($"\nThe house has rolled the Push. The Push is a {pushDie}");
+            io.DisplayMessage(pushMessage);
+        }
         public void PlayerRolls(TheHouse.IPlayerInterface io, int pushDie)
         {
+
             List<int> currentGameDice = new List<int>();
             currentGameDice.Add(pushDie);
-
-
 
             int loop = 0;
             while (loop < diceAmount)
@@ -163,6 +138,33 @@ namespace GameLibrary
             return(result);
         }
 
+        public string Payout(Enums.resultType result, TheHouse.Player player)
+        {
+            string message;
+            switch (result)
+            {
+                case Enums.resultType.winDirect:
+                    win = bet * 2;
+                    message = ("You won! Single payout, you win " + win + "!");
+                    player.Credits += win - bet;
+                    break;
+                case Enums.resultType.winShove:
+                    win = bet * 10;
+                    player.Credits += win - bet;
+                    message = ("You won the Shove! Nine times payout, you win " + win + "!");
+                    break;
+                case Enums.resultType.lose:
+                    message = ("You have lost, better luck next time");
+                    player.Credits -= bet;
+                    break;
+                default:
+                    message = ("An error has occurred, We cannot determine the outcome of the game.");
+                    break;
+
+
+            }
+            return (message);
+        }
 
 
     }

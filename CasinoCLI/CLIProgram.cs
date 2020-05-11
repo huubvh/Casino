@@ -77,8 +77,6 @@ namespace PlayChannelCLI
             }
 
         }
-
-    
          
         bool ValidateInt(string input)
         {
