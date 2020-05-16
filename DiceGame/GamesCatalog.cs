@@ -6,11 +6,12 @@ namespace GameLibrary
 {
     public class GamesCatalog
     {
+
         public GamesCatalog()
         {
 
         }
-        public Dictionary<int, string> AllGames
+        public Dictionary<int, string> GetGames
         {
             get
             {
@@ -42,10 +43,10 @@ namespace GameLibrary
             }
         }
 
-        public bool checkGameExistence(GamesCatalog gamesCatalog, int selectedGame)
+        public bool checkGameExistence(Dictionary<int, string> gameList, int selectedGame)
         {
             //check if game exists    
-            foreach (var item in gamesCatalog.AllGames)
+            foreach (var item in gameList)
             {
                 if (selectedGame == item.Key)
                 {
@@ -60,6 +61,8 @@ namespace GameLibrary
     public class PublishedGame
     {
         public string GameName { get; set; }
+        public string Description { get; set; }
+        public string GameRules { get; set; }
         public string GameType { get; set; }
         public double GameOdds { get; set; }
 

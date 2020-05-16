@@ -7,10 +7,10 @@ namespace PlayChannelCLI
         public static void Main(string[] args)
         {
             ConsolePlayerInterface io = new ConsolePlayerInterface();
-            PlayseatCLI playSeat = new PlayseatCLI();
-            playSeat.Run(io);
+            PlayseatCLI playSeat = new PlayseatCLI(io);
+            playSeat.Run();
         }
-
+        
         public class ConsolePlayerInterface : TheHouse.IPlayerInterface
         {
             public void DisplayMessage(string message, params object[] parameters) =>

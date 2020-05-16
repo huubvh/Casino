@@ -4,15 +4,21 @@ using System.Collections.Generic;
 
 namespace GameLibrary
 {
-    public class Poker 
+    public class PokerGame 
     {
         
         DeckOfCards deck = new DeckOfCards();
+        TheHouse.IPlayerInterface io;
+        TheHouse.Player player;
 
-       public void PlayPoker(TheHouse.Player player, TheHouse.IPlayerInterface io)
+        public PokerGame(TheHouse.Player newPlayer, TheHouse.IPlayerInterface newIo)
         {
-            Poker pokerGame = new Poker();
-                        
+            player = newPlayer;
+            io = newIo;
+        }
+        public void PlayPoker()
+        {
+                     
             deck.Reset();
             deck.Shuffle();
 

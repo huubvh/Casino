@@ -1,52 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using TheHouse;
 
 namespace GameLibrary
 {
-    public class DiceGame
+
+
+
+    public class DiceGame : PublishedGame
 
     {
         public Enums.resultType result;
         public int bet;
         public int win;
         public int pushDie;
-        public PlayerTurn playerTurn = new PlayerTurn();
-
+        public PlayerTurn playerTurn;
+        public TheHouse.Player player;
         public int shoveDie;
-        public int diceAmount = 3;
-        public int diceType = 6;
+        public int diceAmount;
+        public int diceType;
+        public TheHouse.IPlayerInterface io;
+       
+        public DiceGame(Player newPlayer, TheHouse.IPlayerInterface newIo)
+        {
+            playerTurn = new PlayerTurn();
+            player = newPlayer;
+            io = newIo;
+        }
 
-        public void PlayDiceGame(TheHouse.Player player, TheHouse.IPlayerInterface io)
+        public void PlayDiceGame()
         {
 
-            GameSummary(io); //static method
-            bet = EnterBet(player, io); //function
-            Push(io); //method
-            PlayerRolls(io, pushDie);
+            GameSummary();
+            bet = EnterBet(); //function
+            Push(); //method
+            PlayerRolls(pushDie);
 
             if (!playerTurn.Win)
             {
                 // go to shove
-                result = Shove(io); //function
+                result = Shove(); //function
             }
             else
             {
                 //win
                 result = Enums.resultType.winDirect;
             }
-            io.DisplayMessage(Payout(result,player)); //call a method with the result of a function
+            io.DisplayMessage(Payout(result)); //call a method with the result of a function
         }
 
 
-        public static void GameSummary(TheHouse.IPlayerInterface io)
+        public void GameSummary()
         {
 
             string gameSummary = ("Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!");
             io.DisplayMessage(gameSummary);
         }
 
-        public int EnterBet(TheHouse.Player player, TheHouse.IPlayerInterface io)
+        public int EnterBet()
         {
             bool betplaced = false;
             int newBet = 0;
@@ -72,7 +83,7 @@ namespace GameLibrary
             return (newBet);
         }
 
-        public void Push(TheHouse.IPlayerInterface io)
+        public void Push()
         {
             //push
             pushDie = Dice.DiceRoll(diceType);
@@ -80,7 +91,7 @@ namespace GameLibrary
             io.DisplayMessage(pushMessage);
         }
 
-        public void PlayerRolls(TheHouse.IPlayerInterface io, int pushDie)
+        public void PlayerRolls(int pushDie)
         {
 
             List<int> currentGameDice = new List<int>();
@@ -117,7 +128,7 @@ namespace GameLibrary
 
         }
 
-        public Enums.resultType Shove(TheHouse.IPlayerInterface io)
+        public Enums.resultType Shove()
         {
             shoveDie = Dice.DiceRoll(diceType);
             io.DisplayMessage("\nÝou've got one chance to save yourself!");
@@ -138,7 +149,7 @@ namespace GameLibrary
             return(result);
         }
 
-        public string Payout(Enums.resultType result, TheHouse.Player player)
+        public string Payout(Enums.resultType result)
         {
             string message;
             switch (result)
@@ -198,5 +209,4 @@ namespace GameLibrary
         };
     }
 
-    
 }

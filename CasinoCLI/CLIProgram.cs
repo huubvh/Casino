@@ -9,10 +9,15 @@ namespace PlayChannelCLI
         TheHouse.Player player = new TheHouse.Player();
         GameLibrary.GamesCatalog catalog = new GameLibrary.GamesCatalog();
         int selectedGame;
-        bool gameExists = false;
-        
 
-        public void Run(Program.ConsolePlayerInterface io)
+        Program.ConsolePlayerInterface io = new Program.ConsolePlayerInterface();
+
+        public PlayseatCLI(Program.ConsolePlayerInterface newIo)
+        {
+            io = newIo;
+        }
+
+        public void Run()
         {
             // post welcome message
             string welcomeMessage = TheHouse.CashiersDesk.Welcome();
@@ -24,7 +29,8 @@ namespace PlayChannelCLI
 
             while (keepPlaying)
             {
-                Play(io);
+                selectedGame = SelectGame();
+                keepPlaying = StartGame(selectedGame, player);
 
             }
             io.DisplayMessage("Thanks for Playing on PlaySeatCLI!");
@@ -32,10 +38,10 @@ namespace PlayChannelCLI
 
         }
 
-        public void Play(Program.ConsolePlayerInterface io)
+        public int SelectGame()
         {
             // get available games
-            foreach (var item in catalog.AllGames)
+            foreach (var item in catalog.GetGames)
             {
                 io.DisplayMessage("For " + item.Value + " press " + item.Key);
             }
@@ -60,8 +66,8 @@ namespace PlayChannelCLI
                 else
                 {
                     selectedGame = Int32.Parse(inputString);
-                    gameExists = catalog.checkGameExistence(catalog, selectedGame);
-                    if (!gameExists)
+                    
+                    if (!catalog.checkGameExistence(catalog.GetGames, selectedGame))
                     {
                         io.DisplayMessage($"'{inputString}' does not exist");
                         io.DisplayMessage($"Please try again");
@@ -69,35 +75,30 @@ namespace PlayChannelCLI
                     }
                     else 
                     {
-                        keepPlaying = StartGame(selectedGame, player, io);
-
+                        validatedInput = true;
                     }
                 }
 
             }
+            return(selectedGame);
 
         }
-         
-        bool ValidateInt(string input)
-        {
-            //validate and return input
-            int inputInt = 0;
-            if (!int.TryParse(input, out inputInt))
-            {
-                return false;
-            }
-            return true;           
-        }
-
-        bool StartGame(int selectedGame, TheHouse.Player player, Program.ConsolePlayerInterface io)
+        
+        bool StartGame(int selectedGame, TheHouse.Player player)
         {
 
             switch (selectedGame)
             {
                 case 1:
-                    GameLibrary.DiceGame diceGame = new GameLibrary.DiceGame();
+                    GameLibrary.DiceGame diceGame = new GameLibrary.DiceGame(player, io);
+                    
+                    string name;
+                    catalog.GetGames.TryGetValue(selectedGame, out name);
+                    diceGame.GameName = name;
+                    diceGame.diceAmount = 3;
+                    diceGame.diceType = 6;
 
-                    diceGame.PlayDiceGame(player, io);
+                    diceGame.PlayDiceGame();
                     // end of game
                     io.DisplayMessage("\nYour current balance = " + player.Credits);
                     io.DisplayMessage("\nPress 'p' to play again, press any other key to end the game");
@@ -112,8 +113,9 @@ namespace PlayChannelCLI
                         return false;
                     }
                 case 2:
-                    GameLibrary.Poker poker = new GameLibrary.Poker();
-                    poker.PlayPoker(player, io);
+                    GameLibrary.PokerGame poker = new GameLibrary.PokerGame(player, io);
+                    
+                    poker.PlayPoker();
                     io.DisplayMessage("\nPress 'p' to play again, press any other key to end the game");
 
                     input = io.GetInput();
@@ -133,8 +135,17 @@ namespace PlayChannelCLI
                 default:
                     return false;
             }
-
-
+        }
+       
+        bool ValidateInt(string input)
+        {
+            //validate and return input
+            int inputInt = 0;
+            if (!int.TryParse(input, out inputInt))
+            {
+                return false;
+            }
+            return true;
         }
 
     }

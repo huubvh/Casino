@@ -11,4 +11,6 @@ namespace TheHouse
         void DisplayMessage(string message, params object[] parameters);
         string GetInput();
     }
+
+   
 }
