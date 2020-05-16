@@ -5,18 +5,19 @@ namespace PlayChannelCLI
 {
     class PlayseatCLI
     {
-        bool keepPlaying = true;
         TheHouse.Player player;
-        GameLibrary.GamesCatalog catalog = new GameLibrary.GamesCatalog();
-        int selectedGame;
-
+        GameLibrary.GamesCatalog catalog;
         Program.ConsolePlayerInterface io = new Program.ConsolePlayerInterface();
+
+        int selectedGame;
+        bool keepPlaying = true;
 
         public PlayseatCLI(Program.ConsolePlayerInterface newIo)
         {
 
             io = newIo;
             player = new TheHouse.Player(io);
+            catalog = new GameLibrary.GamesCatalog();
         }
 
         public void Run()
