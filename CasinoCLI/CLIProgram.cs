@@ -41,7 +41,7 @@ namespace PlayChannelCLI
         public int SelectGame()
         {
             // get available games
-            foreach (var item in catalog.GetGames)
+            foreach (var item in catalog.GetGamesCatalog)
             {
                 io.DisplayMessage("For " + item.Value + " press " + item.Key);
             }
@@ -67,7 +67,7 @@ namespace PlayChannelCLI
                 {
                     selectedGame = Int32.Parse(inputString);
                     
-                    if (!catalog.checkGameExistence(catalog.GetGames, selectedGame))
+                    if (!catalog.checkGameExistence(catalog.GetGamesCatalog, selectedGame))
                     {
                         io.DisplayMessage($"'{inputString}' does not exist");
                         io.DisplayMessage($"Please try again");
@@ -93,7 +93,7 @@ namespace PlayChannelCLI
                     GameLibrary.DiceGame diceGame = new GameLibrary.DiceGame(player, io);
                     
                     string name;
-                    catalog.GetGames.TryGetValue(selectedGame, out name);
+                    catalog.GetGamesCatalog.TryGetValue(selectedGame, out name);
                     diceGame.GameName = name;
                     diceGame.diceAmount = 3;
                     diceGame.diceType = 6;

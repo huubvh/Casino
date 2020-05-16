@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TheHouse;
 
 namespace GameLibrary
 {
@@ -11,7 +12,7 @@ namespace GameLibrary
         {
 
         }
-        public Dictionary<int, string> GetGames
+        public Dictionary<int, string> GetGamesCatalog
         {
             get
             {
@@ -58,20 +59,10 @@ namespace GameLibrary
         }
 
     }
-    public class PublishedGame
+    public class PublishedGame :BaseGame
     {
-        public string GameName { get; set; }
-        public string Description { get; set; }
-        public string GameRules { get; set; }
-        public string GameType { get; set; }
-        public double GameOdds { get; set; }
+        public DateTime addedToCatalogDate { get; set; }
+        
 
-        public void AddGame(string newGameName, string newGameType, double newGameOdds)
-        {
-            GameName = newGameName;
-            GameType = newGameType;
-            GameOdds = newGameOdds;
-                
-        }
     }
 }

@@ -11,16 +11,15 @@ namespace GameLibrary
 
     {
         public Enums.resultType result;
-        public int bet;
         public int win;
         public int pushDie;
         public PlayerTurn playerTurn;
-        public TheHouse.Player player;
         public int shoveDie;
         public int diceAmount;
         public int diceType;
         public TheHouse.IPlayerInterface io;
-       
+        public TheHouse.Player player;
+
         public DiceGame(Player newPlayer, TheHouse.IPlayerInterface newIo)
         {
             playerTurn = new PlayerTurn();
@@ -32,7 +31,7 @@ namespace GameLibrary
         {
 
             GameSummary();
-            bet = EnterBet(); //function
+            Bet = player.PlaceBet(); //function
             Push(); //method
             PlayerRolls(pushDie);
 
@@ -57,31 +56,6 @@ namespace GameLibrary
             io.DisplayMessage(gameSummary);
         }
 
-        public int EnterBet()
-        {
-            bool betplaced = false;
-            int newBet = 0;
-            while (!betplaced)
-            {
-
-                io.DisplayMessage($"Your current balance = {player.Credits}");
-                io.DisplayMessage("How much do you want to bet?");
-
-                string betAmountString = io.GetInput();
-
-                try
-                {
-                    newBet = int.Parse(betAmountString);
-                    betplaced = true;
-
-                }
-                catch (FormatException)
-                {
-                    io.DisplayMessage($"you have not entered a valid amount");
-                }
-            }
-            return (newBet);
-        }
 
         public void Push()
         {
@@ -155,18 +129,18 @@ namespace GameLibrary
             switch (result)
             {
                 case Enums.resultType.winDirect:
-                    win = bet * 2;
+                    win = Bet * 2;
                     message = ("You won! Single payout, you win " + win + "!");
-                    player.Credits += win - bet;
+                    player.Credits += win - Bet;
                     break;
                 case Enums.resultType.winShove:
-                    win = bet * 10;
-                    player.Credits += win - bet;
+                    win = Bet * 10;
+                    player.Credits += win - Bet;
                     message = ("You won the Shove! Nine times payout, you win " + win + "!");
                     break;
                 case Enums.resultType.lose:
                     message = ("You have lost, better luck next time");
-                    player.Credits -= bet;
+                    player.Credits -= Bet;
                     break;
                 default:
                     message = ("An error has occurred, We cannot determine the outcome of the game.");
