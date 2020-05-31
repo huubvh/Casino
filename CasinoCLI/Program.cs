@@ -11,7 +11,7 @@ namespace PlayChannelCLI
             playSeat.Run();
         }
         
-        public class ConsolePlayerInterface : TheHouse.IPlayerInterface
+        public class ConsolePlayerInterface : TheHouse.IUserInterface
         {
             public void DisplayMessage(string message, params object[] parameters) =>
                 Console.WriteLine(string.Format(message, parameters));

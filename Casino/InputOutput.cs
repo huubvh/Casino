@@ -6,7 +6,7 @@ namespace TheHouse
 {
 
 
-    public interface IPlayerInterface
+    public interface IUserInterface
     {
         void DisplayMessage(string message, params object[] parameters);
         string GetInput();

@@ -70,7 +70,7 @@ namespace PlayChannelCLI
                 {
                     selectedGame = Int32.Parse(inputString);
                     
-                    if (!catalog.checkGameExistence(catalog.GetGamesCatalog, selectedGame))
+                    if (!catalog.CheckGameExistence(catalog.GetGamesCatalog, selectedGame))
                     {
                         io.DisplayMessage($"'{inputString}' does not exist");
                         io.DisplayMessage($"Please try again");

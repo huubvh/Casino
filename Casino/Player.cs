@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace TheHouse
 {
@@ -8,11 +7,11 @@ namespace TheHouse
     {
         //keep track of player credits
         public string Name { get; set; }
-        public double Credits { get; set; }
+        public decimal Credits { get; set; }
 
-        public TheHouse.IPlayerInterface io;
+        public IUserInterface io;
 
-        public Player(TheHouse.IPlayerInterface newIo)
+        public Player(IUserInterface newIo)
         {
             io = newIo;
         }
@@ -40,8 +39,23 @@ namespace TheHouse
                 {
                     io.DisplayMessage($"you have not entered a valid amount");
                 }
+                
             }
+            Credits = Credits - newBet;
             return (newBet);
+        }
+
+        public void Payout(int bet, decimal winFactor)
+        {
+            decimal win = bet * winFactor;
+            Credits = Credits + (win);
+            string message = ($"You won! Single payout, you win {win} !");
+            io.DisplayMessage(message);
+        }
+        public void Payout ()
+        { 
+            string message = ($"You have lost, better luck next time");
+            io.DisplayMessage(message);
         }
     }
 

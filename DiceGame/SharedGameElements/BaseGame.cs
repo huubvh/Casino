@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TheHouse;
 
 namespace GameLibrary
 {
@@ -10,21 +11,27 @@ namespace GameLibrary
         public string Description { get; set; }
         public string GameRules { get; set; }
         public string GameType { get; set; }
-        public double GameOdds { get; set; }
+        public decimal GameOdds { get; set; }
 
+        public IUserInterface io;
         public int Bet { get; set; }
 
+        public Player player;
         public BaseGame()
         {
             
         }
-
-        public void AddGame(string newGameName, string newGameType, double newGameOdds)
+        public void GameSummary()
+        {
+            io.DisplayMessage(GameRules);
+        }
+        public void AddGame(string newGameName, string newGameType, decimal newGameOdds)
         {
             GameName = newGameName;
             GameType = newGameType;
             GameOdds = newGameOdds;
         }
+
 
 
     }

@@ -7,11 +7,11 @@ namespace GameLibrary
     public class PokerGame 
     {
         
-        DeckOfCards deck = new DeckOfCards();
-        TheHouse.IPlayerInterface io;
-        TheHouse.Player player;
+        public DeckOfCards deck = new DeckOfCards();
+        public TheHouse.IUserInterface io;
+        public TheHouse.Player player;
 
-        public PokerGame(TheHouse.Player newPlayer, TheHouse.IPlayerInterface newIo)
+        public PokerGame(TheHouse.Player newPlayer, TheHouse.IUserInterface newIo)
         {
             player = newPlayer;
             io = newIo;
@@ -19,7 +19,7 @@ namespace GameLibrary
         public void PlayPoker()
         {
                      
-            deck.Reset();
+            deck.NewDeck();
             deck.Shuffle();
 
             List<Card> playerHand = new List<Card>();
@@ -61,7 +61,7 @@ namespace GameLibrary
 
         }
 
-        public HandValue CheckForValue(List<Card> hand, TheHouse.IPlayerInterface io)
+        public HandValue CheckForValue(List<Card> hand, TheHouse.IUserInterface io)
         {
 
             if(hand.Count != 3)

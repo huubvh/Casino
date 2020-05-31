@@ -5,30 +5,28 @@ using TheHouse;
 namespace GameLibrary
 {
 
-
-
     public class DiceGame : PublishedGame
 
     {
         public Enums.resultType result;
         public int win;
         public int pushDie;
-        public PlayerTurn playerTurn;
+        public PlayerTurn playerTurn = new PlayerTurn();
         public int shoveDie;
         public int diceAmount;
         public int diceType;
-        public TheHouse.IPlayerInterface io;
-        public TheHouse.Player player;
 
-        public DiceGame(Player newPlayer, TheHouse.IPlayerInterface newIo)
+
+        public DiceGame(Player newPlayer, IUserInterface newIo)
         {
-            playerTurn = new PlayerTurn();
             player = newPlayer;
             io = newIo;
         }
 
         public void PlayDiceGame()
         {
+
+            GameRules = "Welcome to the Dice Game! \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!";
 
             GameSummary();
             Bet = player.PlaceBet(); //function
@@ -45,16 +43,27 @@ namespace GameLibrary
                 //win
                 result = Enums.resultType.winDirect;
             }
-            io.DisplayMessage(Payout(result)); //call a method with the result of a function
+
+            switch (result)
+            {
+                case Enums.resultType.winDirect:
+                    player.Payout(Bet, 2);
+                    break;
+                case Enums.resultType.winShove:
+                    player.Payout(Bet, 10);
+                    break;
+                case Enums.resultType.lose:
+                    player.Payout();
+                    break;
+                default:
+                    break;
+
+
+            }
         }
 
 
-        public void GameSummary()
-        {
 
-            string gameSummary = ("Welcome to the Dice Game. \nYou can roll three dice. Make sure you don't roll a pair, or you might lose!");
-            io.DisplayMessage(gameSummary);
-        }
 
 
         public void Push()
@@ -123,54 +132,12 @@ namespace GameLibrary
             return(result);
         }
 
-        public string Payout(Enums.resultType result)
-        {
-            string message;
-            switch (result)
-            {
-                case Enums.resultType.winDirect:
-                    win = Bet * 2;
-                    message = ("You won! Single payout, you win " + win + "!");
-                    player.Credits += win - Bet;
-                    break;
-                case Enums.resultType.winShove:
-                    win = Bet * 10;
-                    player.Credits += win - Bet;
-                    message = ("You won the Shove! Nine times payout, you win " + win + "!");
-                    break;
-                case Enums.resultType.lose:
-                    message = ("You have lost, better luck next time");
-                    player.Credits -= Bet;
-                    break;
-                default:
-                    message = ("An error has occurred, We cannot determine the outcome of the game.");
-                    break;
-
-
-            }
-            return (message);
-        }
-
 
     }
     public class PlayerTurn
     {
-            
-        public List<int> PlayerDice { get; set; }
-
         public int Pair { get; set; }
         public bool Win { get; set; }
-    }
-
-
-    public class Dice
-    {
-        public static int DiceRoll(int d)
-        {
-            Random roll = new Random();
-            int dieValue = roll.Next(1, d + 1);
-            return dieValue;
-        }
     }
 
     public class Enums

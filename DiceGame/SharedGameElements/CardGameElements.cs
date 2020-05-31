@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GameLibrary
 {
-
+    
     public enum Suit
     {
         Club = 1,
@@ -28,8 +28,11 @@ namespace GameLibrary
         Ten = 10,
         Jack = 11,
         Queen = 12,
-        King = 13
+        King = 13,
+        Joker = 14
     }
+
+ 
     public class Card
     {
         public Suit Suit { get; set; }
@@ -39,13 +42,12 @@ namespace GameLibrary
     public class DeckOfCards
     {
         public List<Card> Cards { get; set; }
-
         public DeckOfCards()
         {
-            Reset();
+            NewDeck();
         }
 
-        public void Reset()
+        public virtual void NewDeck()
         {
             Cards = Enumerable.Range(1, 4)
                 .SelectMany(s => Enumerable.Range(1, 13)
@@ -81,6 +83,25 @@ namespace GameLibrary
             Cards.RemoveAll(takeCards.Contains);
 
             return takeCards;
+        }
+
+        public class DeckOfCardsJokers : DeckOfCards
+        {
+            
+            public override void NewDeck()
+            {
+                Cards = Enumerable.Range(1, 4)
+                    .SelectMany(s => Enumerable.Range(1, 14)
+                    .Select(c => new Card()
+                    {
+                        Suit = (Suit)s,
+                        CardNumber = (CardNumber)c
+                    }
+                                )
+                            )
+                     .ToList();
+            }
+
         }
     }
 }
