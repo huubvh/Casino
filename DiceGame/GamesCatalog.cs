@@ -30,7 +30,7 @@ namespace GameLibrary
 
                 PublishedGame newGame3 = new PublishedGame();
                 newGame3.AddGame ("Black Jack", "Cards", 0.95m);
-                newGame.GameRules = "Welcome to Black Jack!";
+                newGame.GameRules = "Welcome to Black Jack! You can't double or split. Insurance is allowed. Dealer hits on soft 17. Dealer wins on draw";
                 allGames.Add(newGame3);
 
                 int key = 1;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 
@@ -16,7 +17,7 @@ namespace GameLibrary
 
     public enum CardNumber
     {
-        A = 1,
+        Ace = 1,
         Two = 2,
         Three = 3,
         Four = 4,
@@ -32,11 +33,67 @@ namespace GameLibrary
         Joker = 14
     }
 
+
+    public class CardHand
+    {
+        public List<Card> Cards = new List<Card>();
+
+        public List<Card> AddCard(Card card)
+        {
+            Cards.Add(card);
+            return Cards;
+        }
+
+        public string ShowHand()
+        {
+            string handMessage = "";
+            foreach (Card c in Cards)
+            {
+                handMessage += (c.CardNumber.ToString()) + "/";
+            }
+
+            return handMessage;
+        }
+
+        public virtual int FaceValue(CardNumber cardNumber)
+        {
+
+            int value = 0;
+            if ((int)cardNumber > 9)
+            {
+                value = 10;
+            }
+            else
+            {
+                value = (int)cardNumber;
+            }
+            return value;
+        }
+        public string DealCard(DeckOfCards deck)
+        {
+            Card card = deck.TakeCard(); 
+            Cards.Add(card);
+            string message = card.CardNumber.ToString();
+            return message;
+        }
+    }
  
     public class Card
     {
+        public int faceValue;
+        public string cardValue;
         public Suit Suit { get; set; }
         public CardNumber CardNumber { get; set; }
+        public string CardValue
+        { 
+            get 
+            {
+                string value = CardNumber.ToString() + " of " + Suit.ToString();
+                return value;
+            } 
+            set { cardValue = value; } 
+        }
+
     }
 
     public class DeckOfCards
@@ -103,5 +160,6 @@ namespace GameLibrary
             }
 
         }
+
     }
 }

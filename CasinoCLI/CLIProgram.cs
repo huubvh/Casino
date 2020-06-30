@@ -7,17 +7,30 @@ namespace PlayChannelCLI
     {
         TheHouse.Player player;
         GameLibrary.GamesCatalog catalog;
-        Program.ConsolePlayerInterface io = new Program.ConsolePlayerInterface();
+        ConsolePlayerInterface io = new ConsolePlayerInterface();
 
         int selectedGame;
         bool keepPlaying = true;
 
-        public PlayseatCLI(Program.ConsolePlayerInterface newIo)
+        public static void Main(string[] args)
         {
-
-            io = newIo;
+            //ConsolePlayerInterface io = new ConsolePlayerInterface();
+            PlayseatCLI playSeat = new PlayseatCLI();
+            playSeat.Run();
+        }
+        public PlayseatCLI()
+        {
             player = new TheHouse.Player(io);
             catalog = new GameLibrary.GamesCatalog();
+        }
+
+        public class ConsolePlayerInterface : TheHouse.IUserInterface
+        {
+            public void DisplayMessage(string message, params object[] parameters) =>
+                Console.WriteLine(string.Format(message, parameters));
+
+            public string GetInput() =>
+                Console.ReadLine();
         }
 
         public void Run()
@@ -132,8 +145,20 @@ namespace PlayChannelCLI
                     }
                     
                 case 3:
-                    io.DisplayMessage($"This game has not yet been implemented");
-                    return true;
+                    GameLibrary.BlackJack blackJack = new GameLibrary.BlackJack(player, io);
+                    blackJack.PlayBlackJack();
+                    io.DisplayMessage("\nPress 'p' to play again, press any other key to end the game");
+
+                    input = io.GetInput();
+                    if (input == "p")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
 
                 default:
                     return false;

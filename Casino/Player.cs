@@ -49,7 +49,13 @@ namespace TheHouse
         {
             decimal win = bet * winFactor;
             Credits = Credits + (win);
-            string message = ($"You won! Single payout, you win {win} !");
+            string message = ($"You won! You win {win} !");
+            io.DisplayMessage(message);
+        }
+        public void Payout(int bet)
+        {
+            Credits = Credits + (bet);
+            string message = ($"It's a draw, you get {bet} back!");
             io.DisplayMessage(message);
         }
         public void Payout ()

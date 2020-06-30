@@ -4,12 +4,10 @@ using System.Collections.Generic;
 
 namespace GameLibrary
 {
-    public class PokerGame 
+    public class PokerGame : BaseGame
     {
         
         public DeckOfCards deck = new DeckOfCards();
-        public TheHouse.IUserInterface io;
-        public TheHouse.Player player;
 
         public PokerGame(TheHouse.Player newPlayer, TheHouse.IUserInterface newIo)
         {
