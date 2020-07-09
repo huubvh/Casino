@@ -8,8 +8,8 @@ namespace GameLibrary
     public class BlackJack : BaseGame
     {
         private DeckOfCards deck = new DeckOfCards();
-        private BjHand playerHand = new BjHand();
-        private BjHand dealerHand = new BjHand();
+        private BlackJackHand playerHand = new BlackJackHand();
+        private BlackJackHand dealerHand = new BlackJackHand();
         public Result? GameResult = null;
 
         public BlackJack(TheHouse.Player newPlayer, TheHouse.IUserInterface newIo)
@@ -176,7 +176,7 @@ namespace GameLibrary
             }
         }
     }
-    public class BjHand : CardHand
+    public class BlackJackHand : CardHand
     {
         public bool Soft = false;
         public int Total = 0;
